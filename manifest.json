@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "NoPol",
+  "description": "Blocks subreddits",
+  "version": "1.0",
+
+  "permissions": [ 
+    "https://old.reddit.com/*",
+    "storage",
+    "contextMenus"
+  ],
+
+  "background": {
+    "scripts": ["/js/contextMenu.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [ {
+      "matches": [
+        "https://old.reddit.com/*"
+      ],
+      "js": [
+        "/js/external/jquery-2.2.0.js",
+        "/js/blockSubreddits.js"
+      ]
+    }
+  ],
+
+  "browser_action": {
+    "default_icon": "/images/icon.png",
+    "default_popup": "popup.html"
+  }
+}
