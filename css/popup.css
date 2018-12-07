@@ -1,0 +1,38 @@
+.container {
+    width: auto;
+    height: auto;
+    display: block;
+    overflow: auto;
+}
+
+.extension-header {
+    text-align: center;
+}
+
+.action-container {
+    margin: 20px 10px 20px 10px;
+}
+
+.subreddit-input {
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.subreddit-input input {
+    border: 0px;
+    border-bottom: 1px solid black;
+}
+
+.blocked-subreddit-div {
+    border-bottom: 1px dotted black;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.blocked-subreddit-div button {
+    margin-left: auto;
+}
