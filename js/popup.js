@@ -1,5 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addBlockedSubreddit').addEventListener("click", addBlockedSubreddit);
+    document.getElementById('temporaryDisable').addEventListener("click", temporaryDisable);
+    chrome.storage.local.get(null, function(data) {
+		if (data['setBlocking'] === undefined) {
+			data['setBlocking'] = true;
+			chrome.storage.local.set(data);
+			let checkbox = document.getElementById("temporaryDisable");
+			checkbox.checked = data['setBlocking'];
+			if (checkbox.checked) {
+				document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
+			} else {
+				document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
+			}
+		} else {
+			let checkbox = document.getElementById("temporaryDisable");
+			checkbox.checked = data['setBlocking'];
+			if (checkbox.checked) {
+				document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
+			} else {
+				document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
+			}
+		}
+	});
     chrome.storage.local.get(null, function(blockedSubreddits) {
 		for (let key in blockedSubreddits) {
 			let blockSubredditDiv = "<div class='blocked-subreddit-div'><p>" + blockedSubreddits[key] + "</p><button class='delete-button' id='" + key + "'>Delete</button></div>";
@@ -7,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById(key).addEventListener("click", removeBlockedSubreddit);
 		}
 	});
+
 });
 
 function addBlockedSubreddit() {
@@ -24,6 +47,22 @@ function addBlockedSubreddit() {
 	} else {
 		alert("Please enter a valid subreddit");
 	}
+}
+
+function temporaryDisable() {
+	let checkbox = document.getElementById("temporaryDisable");
+	chrome.storage.local.get(null, function(data) {
+		data['setBlocking'] = !data['setBlocking'];		
+		chrome.storage.local.set(data);
+		let checkbox = document.getElementById("temporaryDisable");
+		if (checkbox.checked) {
+			document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
+			chrome.tabs.executeScript(null, {file: "/js/blockSubreddits.js"});
+		} else {
+			document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
+			chrome.tabs.executeScript(null, {code: "location.reload()"});
+		}
+	});
 }
 
 function removeBlockedSubreddit() {
