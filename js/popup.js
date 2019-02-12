@@ -5,22 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (data['setBlocking'] === undefined) {
 			data['setBlocking'] = true;
 			chrome.storage.local.set(data);
-			let checkbox = document.getElementById("temporaryDisable");
-			checkbox.checked = data['setBlocking'];
-			if (checkbox.checked) {
-				document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
-			} else {
-				document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
-			}
-		} else {
-			let checkbox = document.getElementById("temporaryDisable");
-			checkbox.checked = data['setBlocking'];
-			if (checkbox.checked) {
-				document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
-			} else {
-				document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
-			}
 		}
+		let checkbox = document.getElementById("temporaryDisable").checked = data['setBlocking'];
+		if (checkbox.checked) {
+			document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
+		} else {
+			document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
+		}		
 	});
     chrome.storage.local.get(null, function(blockedSubreddits) {
 		for (let key in blockedSubreddits) {
@@ -35,15 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function addBlockedSubreddit() {
 	let subredditToBlock = document.getElementById('addBlockedSubredditName').value.trim();
 	if (subredditToBlock.length > 0) {
-		let key = subredditToBlock;
 		let value = "r/" + subredditToBlock;
-		let object = {};
-		object[key] = value;
-		chrome.storage.local.set(object);
+		chrome.storage.local.set( {[subredditToBlock]: value} );
 		chrome.tabs.executeScript(null, {file: "/js/blockSubreddits.js"});
-		let blockSubredditDiv = "<div class='blocked-subreddit-div'><p>" + value + "</p><button class='delete-button' id='" + key + "'>Delete</button></div>";
+		let blockSubredditDiv = "<div class='blocked-subreddit-div'><p>" + value + "</p><button class='delete-button' id='" + subredditToBlock + "'>Delete</button></div>";
 		$("#blockListContainer").append(blockSubredditDiv);
-		document.getElementById(key).addEventListener("click", removeBlockedSubreddit);
+		document.getElementById(subredditToBlock).addEventListener("click", removeBlockedSubreddit);
 	} else {
 		alert("Please enter a valid subreddit");
 	}

@@ -7,13 +7,8 @@ var contextMenuItem = {
 chrome.contextMenus.create(contextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
-	let url = clickData.linkUrl
-	let subredditToBlock = url.replace("https://old.reddit.com/r/", "");
-	subredditToBlock = subredditToBlock.replace("/", "");
-	let key = subredditToBlock;
+	let subredditToBlock = clickData.linkUrl.replace("https://old.reddit.com/r/", "").replace("/", "");
 	let value = "r/" + subredditToBlock;
-	let object = {};
-	object[key] = value;
-	chrome.storage.local.set(object);
+	chrome.storage.local.set( {[subredditToBlock]: value} );
 	chrome.tabs.executeScript(null, {file: "/js/blockSubreddits.js"});
 });
