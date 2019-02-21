@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			data['setBlocking'] = true;
 			chrome.storage.local.set(data);
 		}
-		let checkbox = document.getElementById("temporaryDisable").checked = data['setBlocking'];
-		if (checkbox.checked) {
+		let enableBlocking = document.getElementById("temporaryDisable").checked = data['setBlocking'];
+		if (enableBlocking) {
 			document.getElementById("disabledSignifier").innerHTML = "Blocking enabled";
 		} else {
 			document.getElementById("disabledSignifier").innerHTML = "Blocking disabled";
