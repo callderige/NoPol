@@ -6,4 +6,6 @@ $(document).ready(function() {
 			}
 		}
 	});
+	//Block promoted ads.
+	$('*[data-promoted="true"]').remove();
 });
